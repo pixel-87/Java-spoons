@@ -5,7 +5,9 @@ A multi-threaded card playing simulation (Spoons).
 Game will start with n players and decks, where n is positive.
 
 Each player will start with 4 cards and try to get 4 cards of the same number.
-if the game is not won immediately, a player can take a card from the deck on their left and discard a card of their choosing to the deck on their right.
+if the game is not won immediately, a player can take a card from the top of the deck on their left and discard a card of their choosing to the bottom of the deck on their right.
+
+![A ring topology alternating players and decks](images/ringTopology.png)
 
 # Game playing strategy
 
@@ -16,8 +18,6 @@ E.g. if player 1 has one 1 faced card, three 2s, and they have just drawn anothe
 # Starting the game
 
 To start the game, you must execute the CardGame class, whose main method requests via CLI the number of players (n) and the location of a valid input pack.
-
-## For example
 
 ```
 java CardGame
