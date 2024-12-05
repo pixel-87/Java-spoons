@@ -1,7 +1,14 @@
+// Card class file
 package cardgame;
 
+/**
+ * Represents a playing card with a face value. Immutable and thread-safe.
+ */
 public class Card {
 
+    /**
+     * The face value of the card (non-negative integer).
+     */
     private final int value;
 
     /**
@@ -14,12 +21,11 @@ public class Card {
     }
 
     /**
-     * Getter for face value of Card.
+     * Getter for the face value of the card.
      *
      * @return face value of the Card
      */
     public int getValue() {
         return value;
     }
-
 }
