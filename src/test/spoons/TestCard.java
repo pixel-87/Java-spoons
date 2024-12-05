@@ -22,6 +22,6 @@ public class TestCard {
         int actualValue = card5.getValue();
 
         // Assert: Verify that the getter returns the expected value
-        Assert.assertEquals(5, actualValue);
+        Assert.assertequals(5, actualValue);
     }
 }
