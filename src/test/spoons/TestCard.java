@@ -5,7 +5,7 @@ import cardgame.Card;
 import org.junit.Assert;
 import org.junit.Test;
 
-/*
+/**
  * JUnit test class for the Card class.
  */
 public class TestCard {
