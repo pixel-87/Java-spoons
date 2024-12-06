@@ -1,5 +1,4 @@
 // TestCard class file
-package spoons;
 
 import cardgame.Card;
 import org.junit.Assert;

@@ -1,6 +1,3 @@
-// Card class file
-package cardgame;
-
 /**
  * Represents a playing card with a face value. Immutable and thread-safe.
  */
