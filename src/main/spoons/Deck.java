@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 public class Deck {
     private final int deckId;
     // ConcurrentLinkedQueue does all the locking, no need to use synchronized or specific lock method
-    private final ConcurrentLinkedQueue<Card> cards = new ConcurrentLinkedQueue<Card>();
+    private final ConcurrentLinkedQueue<Card> cards = new ConcurrentLinkedQueue<>();
 
     /**
      * Constructor to init a deck with an ID.
@@ -26,18 +26,18 @@ public class Deck {
     }
 
     /**
-     * Draws (which removes and returns) the top card of the deck.
-     * @return The top card of the deck.
-     */
-    public Card drawCard() {
-        return cards.poll();
-    }
-
-    /**
      * Adds a card to the bottom / end of the deck.
      * @param card The card being added to the bottom of the deck.
      */
     public void addCard(Card card) {
         cards.add(card);
+    }
+
+    /**
+     * Draws (which removes and returns) the top card of the deck.
+     * @return The top card of the deck.
+     */
+    public Card drawCard() {
+        return cards.poll();
     }
 }
