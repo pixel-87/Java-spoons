@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Represents the main CardGame class to manage the game.
@@ -49,8 +50,21 @@ public class CardGame {
      */
     public static void main(String[] args) {
         try {
-            int numPlayers = 4; // Example, ideally prompt user
-            String filePath = "cardPack.txt"; // Example, ideally prompt user
+
+            // Starts a scanner to read input from the user
+            Scanner scanner = new Scanner(System.in);
+
+            // Prompt for number of players
+            System.out.println("Please enter the number of players:");
+            int numPlayers = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character left by nextInt
+
+            // Prompt for the location of the pack to load
+            System.out.println("Please enter the location of pack to load:");
+            String filepath = scanner.nextLine();
+
+            // Closes the scanner since no more input will be read by the user
+            scanner.close();
 
             List<Card> cardPack = loadPack(filePath);
             if (cardPack.size() < numPlayers * 8) {
