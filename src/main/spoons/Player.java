@@ -41,6 +41,11 @@ public class Player {
      * @param rightDeck             Reference to the deck the player discards to.
      */
     public Player(int playerId, int preferredDenomination, Deck leftDeck, Deck rightDeck) {
+        // checks if left or right deck is null and throws an error in that case.
+        if (leftDeck == null || rightDeck == null) {
+            throw new NullPointerException();
+        }
+
         this.playerId = playerId;
         this.hand = new ArrayList<>();
         this.preferredDenomination = preferredDenomination;
