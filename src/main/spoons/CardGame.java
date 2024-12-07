@@ -47,20 +47,17 @@ public class CardGame {
      */
     public static void main(String[] args) {
         try {
-
-            // Starts a scanner to read input from the user
             Scanner scanner = new Scanner(System.in);
 
             // Prompt for number of players
             System.out.println("Please enter the number of players:");
             int numPlayers = scanner.nextInt();
-            scanner.nextLine(); // Consume the newline character left by nextInt
+            scanner.nextLine();
 
             // Prompt for the location of the pack to load
             System.out.println("Please enter the location of pack to load:");
             String filePath = scanner.nextLine();
 
-            // Closes the scanner since no more input will be read by the user
             scanner.close();
 
             List<Card> cardPack = loadPack(filePath);
@@ -76,24 +73,30 @@ public class CardGame {
         }
     }
 
+
+
     /**
-     * Loads the card pack from a file.
+     * Loads a card pack from a file. Each line in the file represents a card value.
      *
-     * @param filePath Path to the file containing the card pack.
-     * @return List of cards.
-     * @throws IOException If file reading fails.
+     * @param filePath Path to the file containing card values.
+     * @return List of Card objects.
+     * @throws IOException If there is an error reading the file.
+     * @throws IllegalArgumentException If the file contains invalid data.
      */
     public static List<Card> loadPack(String filePath) throws IOException {
+        List<String> lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filePath));
+
+        // Convert each line to an integer and wrap it in a Card object
         List<Card> cardPack = new ArrayList<>();
-        List<String> lines = Files.readAllLines(Paths.get(filePath));
         for (String line : lines) {
             try {
                 int value = Integer.parseInt(line.trim());
                 cardPack.add(new Card(value));
             } catch (NumberFormatException e) {
-                throw new IllegalArgumentException("Invalid card value in pack: " + line);
+                throw new IllegalArgumentException("Invalid card value in pack: " + line, e);
             }
         }
+
         return cardPack;
     }
 
