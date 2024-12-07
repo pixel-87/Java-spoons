@@ -173,6 +173,11 @@ public class Player {
         return playerId;
     }
 
+    /**
+     * Getter for the preferred denomination.
+     *
+     * @return The player's preferred denomination.
+     */
     public  int getPreferredDenomination(){
         return preferredDenomination;
     }
