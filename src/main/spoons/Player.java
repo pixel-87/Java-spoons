@@ -18,7 +18,7 @@ public class Player {
     private final List<Card> hand;
 
     /** The card denomination the player prioritizes (based on their ID). */
-    private final int preferredDenomination;
+    private int preferredDenomination;
 
     /** Reference to the deck from which the player draws cards. */
     private final Deck leftDeck;
@@ -189,5 +189,9 @@ public class Player {
 
     public  List<Card> getHand(){
         return hand;
+    }
+
+    public void setPreferredDenomination(int newPreferredDenomination) {
+        this.preferredDenomination = newPreferredDenomination;
     }
 }
