@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
@@ -39,5 +41,13 @@ public class Deck {
      */
     public Card drawCard() {
         return cards.poll();
+    }
+
+    /**
+     * Reads the list of cards in the deck.
+     * @return A list of cards in the deck
+     */
+    public List<Card> getCards() {
+        return new ArrayList<>(cards);
     }
 }

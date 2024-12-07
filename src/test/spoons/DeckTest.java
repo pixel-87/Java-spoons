@@ -1,6 +1,8 @@
 import org.junit.jupiter.api.Test;
 
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DeckTest {
@@ -32,6 +34,24 @@ class DeckTest {
         assertEquals(card2, deck.drawCard(), "Second card should have value 6");
     }
 
+    @Test
+    void getCards() {
+        Deck deck = new Deck(1);
+        Card card1 = new Card(5);
+        Card card2 = new Card(6);
+        Card card3 = new Card(7);
+
+        deck.addCard(card1);
+        deck.addCard(card2);
+        deck.addCard(card3);
+
+        List<Card> cards = deck.getCards();
+        assertEquals(3, cards.size(),"Cards should be 3");
+
+        assertTrue(cards.contains(card1), "Card should contain card 1");
+        assertTrue(cards.contains(card2), "Card should contain card 2");
+        assertTrue(cards.contains(card3), "Card should contain card 3");
+    }
 
     // Multithreaded tests, tests a maximum of 2 threads/players as this is the maximum a deck should be interacting with.
     @Test
