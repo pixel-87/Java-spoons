@@ -14,6 +14,7 @@ public class Card {
      * @param value face value of the Card
      */
     public Card(int value) {
+
         this.value = value;
     }
 
@@ -23,6 +24,7 @@ public class Card {
      * @return face value of the Card
      */
     public int getValue() {
+
         return value;
     }
 }
