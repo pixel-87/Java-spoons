@@ -1,3 +1,4 @@
+// Updated CardGame Class
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -73,8 +74,6 @@ public class CardGame {
         }
     }
 
-
-
     /**
      * Loads a card pack from a file. Each line in the file represents a card value.
      *
@@ -114,6 +113,10 @@ public class CardGame {
         }
 
         distributeCards();
+
+        for (Player player : players) {
+            player.initializeLogFile();
+        }
     }
 
     /**
@@ -196,6 +199,4 @@ public class CardGame {
     public List<Deck> getDecks() {
         return decks;
     }
-
-
 }
