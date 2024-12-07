@@ -136,6 +136,10 @@ public class Player {
      * @return The card to be discarded.
      */
     public Card discardCard() {
+        if (hand.isEmpty()) {
+            throw new IllegalStateException("Cannot discard from an empty hand");
+        };
+
         for (Card card : hand) {
             if (card.getValue() != preferredDenomination) {
                 hand.remove(card);
