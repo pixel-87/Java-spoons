@@ -1,11 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
-
-// PlayerTest class file
-package spoons;
-
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -29,15 +23,15 @@ public class PlayerTest {
         Deck rightDeck = new Deck(2);
         Player player = new Player(1, 5, leftDeck, rightDeck);
 
-        Assert.assertEquals(1, player.getPlayerId());
-        Assert.assertTrue(player.getHand().isEmpty());
-        Assert.assertEquals(5, player.getPreferredDenomination());
-        Assert.assertNotNull(player.getLeftDeck());
-        Assert.assertNotNull(player.getRightDeck());
+        assertEquals(1, player.getPlayerId());
+        assertTrue(player.getHand().isEmpty());
+        assertEquals(5, player.getPreferredDenomination());
+        assertNotNull(player.getLeftDeck());
+        assertNotNull(player.getRightDeck());
 
         // Check if the file was created with the right name
         File playerFile = new File("player1_output.txt");
-        Assert.assertTrue(playerFile.exists());
+        assertTrue(playerFile.exists());
     }
 
     // Negative test: Null decks
@@ -53,7 +47,7 @@ public class PlayerTest {
         Deck rightDeck = new Deck(2);
         Player player = new Player(0, 5, leftDeck, rightDeck);
 
-        Assert.assertEquals(0, player.getPlayerId());
+        assertEquals(0, player.getPlayerId());
     }
 
     /**
@@ -64,21 +58,21 @@ public class PlayerTest {
     @Test
     public void testIsWinningConditionWinningHand() {
         Player player = createPlayerWithHand(1, new int[]{5, 5, 5, 5});
-        Assert.assertTrue(player.isWinningCondition());
+        assertTrue(player.isWinningCondition());
     }
 
     // Negative test: Non-winning hand with different values
     @Test
     public void testIsWinningConditionNonWinningHand() {
         Player player = createPlayerWithHand(1, new int[]{1, 2, 3, 4});
-        Assert.assertFalse(player.isWinningCondition());
+        assertFalse(player.isWinningCondition());
     }
 
     // Boundary test: Large hand with one winning set
     @Test
     public void testIsWinningConditionLargeHand() {
         Player player = createPlayerWithHand(1, new int[]{3, 3, 3, 3, 7, 8, 9, 10, 2, 1});
-        Assert.assertTrue(player.isWinningCondition());
+        assertTrue(player.isWinningCondition());
     }
 
     /**
@@ -92,7 +86,7 @@ public class PlayerTest {
         player.setPreferredDenomination(5);
 
         Card discarded = player.discardCard();
-        Assert.assertEquals(7, discarded.getValue());
+        assertEquals(7, discarded.getValue());
     }
 
     // Negative test: Discard from empty hand
@@ -109,7 +103,7 @@ public class PlayerTest {
         player.setPreferredDenomination(7);
 
         Card discarded = player.discardCard();
-        Assert.assertEquals(7, discarded.getValue());
+        assertEquals(7, discarded.getValue());
     }
 
     /**
@@ -132,9 +126,9 @@ public class PlayerTest {
                     break;
                 }
             }
-            Assert.assertTrue(found);
+            assertTrue(found);
         } catch (IOException e) {
-            Assert.fail("IOException occurred: " + e.getMessage());
+            fail("IOException occurred: " + e.getMessage());
         }
     }
 
@@ -154,9 +148,9 @@ public class PlayerTest {
                     break;
                 }
             }
-            Assert.assertTrue(found);
+            assertTrue(found);
         } catch (IOException e) {
-            Assert.fail("IOException occurred: " + e.getMessage());
+            fail("IOException occurred: " + e.getMessage());
         }
     }
 

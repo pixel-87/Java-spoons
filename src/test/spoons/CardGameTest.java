@@ -1,8 +1,5 @@
-// CardGameTest class file
-package cardgame;
-
-import org.junit.Test;
-import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -25,10 +22,10 @@ public class CardGameTest {
         List<Card> cardPack = generateCardPack(40);
         CardGame game = new CardGame(4, cardPack);
 
-        Assert.assertEquals(4, game.getNumPlayers());
-        Assert.assertNotNull(game.getPlayers());
-        Assert.assertNotNull(game.getDecks());
-        Assert.assertNotNull(game.getNumPlayers());
+        assertEquals(4, game.getNumPlayers());
+        assertNotNull(game.getPlayers());
+        assertNotNull(game.getDecks());
+        assertNotNull(game.getNumPlayers());
     }
 
     // Negative test: Insufficient cards
@@ -44,7 +41,7 @@ public class CardGameTest {
         List<Card> cardPack = generateCardPack(16);
         CardGame game = new CardGame(2, cardPack);
 
-        Assert.assertEquals(2, game.getNumPlayers());
+        assertEquals(2, game.getNumPlayers());
     }
 
     /**
@@ -58,8 +55,8 @@ public class CardGameTest {
         java.nio.file.Files.write(java.nio.file.Paths.get("test_pack.txt"), lines);
 
         List<Card> cardPack = CardGame.loadPack("test_pack.txt");
-        Assert.assertEquals(8, cardPack.size());
-        Assert.assertEquals(1, cardPack.get(0).getValue());
+        assertEquals(8, cardPack.size());
+        assertEquals(1, cardPack.get(0).getValue());
     }
 
     // Negative test: File with invalid card value
@@ -93,12 +90,12 @@ public class CardGameTest {
 
         // Assert each player has 4 cards
         for (Player player : game.getPlayers()) {
-            Assert.assertEquals(4, player.getHand().size());
+            assertEquals(4, player.getHand().size());
         }
 
         // Assert each deck has 4 cards
         for (Deck deck : game.getDecks()) {
-            Assert.assertEquals(4, deck.getCards().size());
+            assertEquals(4, deck.getCards().size());
         }
     }
 
@@ -119,12 +116,12 @@ public class CardGameTest {
 
         // Assert each player has 4 cards
         for (Player player : game.getPlayers()) {
-            Assert.assertEquals(4, player.getHand().size());
+            assertEquals(4, player.getHand().size());
         }
 
         // Assert remaining cards are evenly distributed to decks
         for (Deck deck : game.getDecks()) {
-            Assert.assertTrue(deck.getCards().size() >= 4);
+            assertTrue(deck.getCards().size() >= 4);
         }
     }
 
@@ -146,7 +143,7 @@ public class CardGameTest {
         game.getPlayers().get(0).receiveCard(new Card(5));
 
         game.endGame();
-        Assert.assertTrue(game.getPlayers().get(0).isWinningCondition());
+        assertTrue(game.getPlayers().get(0).isWinningCondition());
     }
 
     // Negative test: Game ends in a draw
@@ -158,7 +155,7 @@ public class CardGameTest {
         game.endGame();
 
         boolean anyPlayerWon = game.getPlayers().stream().anyMatch(Player::isWinningCondition);
-        Assert.assertFalse(anyPlayerWon);
+        assertFalse(anyPlayerWon);
     }
 
     /**

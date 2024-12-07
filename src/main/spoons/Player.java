@@ -1,6 +1,3 @@
-// Player class file
-package cardgame;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
