@@ -1,3 +1,4 @@
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -6,39 +7,53 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a player in the card game.
- * Each player has a unique ID, a hand of cards, preferences, and interacts with adjacent decks.
+ * Represents a player in the card game. Each player has a unique ID, a hand of
+ * cards, preferences, and interacts with adjacent decks.
  */
 public class Player {
 
-    /** Unique identifier for the player. */
+    /**
+     * Unique identifier for the player.
+     */
     private final int playerId;
 
-    /** Collection of cards representing the player's hand. */
+    /**
+     * Collection of cards representing the player's hand.
+     */
     private final List<Card> hand;
 
-    /** The card denomination the player prioritizes (based on their ID). */
+    /**
+     * The card denomination the player prioritizes (based on their ID).
+     */
     private int preferredDenomination;
 
-    /** Reference to the deck from which the player draws cards. */
+    /**
+     * Reference to the deck from which the player draws cards.
+     */
     private final Deck leftDeck;
 
-    /** Reference to the deck where the player discards cards. */
+    /**
+     * Reference to the deck where the player discards cards.
+     */
     private final Deck rightDeck;
 
-    /** The player’s log file for recording actions (e.g., player1_output.txt). */
+    /**
+     * The player’s log file for recording actions (e.g., player1_output.txt).
+     */
     private final File playerFile;
 
-    /** Flag to indicate whether the game is still active. */
+    /**
+     * Flag to indicate whether the game is still active.
+     */
     private volatile boolean gameInProgress;
 
     /**
      * Constructor for the Player class.
      *
-     * @param playerId              Unique identifier for the player.
+     * @param playerId Unique identifier for the player.
      * @param preferredDenomination Preferred card denomination for the player.
-     * @param leftDeck              Reference to the deck the player draws from.
-     * @param rightDeck             Reference to the deck the player discards to.
+     * @param leftDeck Reference to the deck the player draws from.
+     * @param rightDeck Reference to the deck the player discards to.
      */
     public Player(int playerId, int preferredDenomination, Deck leftDeck, Deck rightDeck) {
         // checks if left or right deck is null and throws an error in that case.
@@ -57,10 +72,10 @@ public class Player {
     }
 
     /**
-     * Initializes the log file for the player.
-     * Creates a new file and writes the initial header information.
+     * Initializes the log file for the player. Creates a new file and writes
+     * the initial header information.
      */
-    private void initializeLogFile() {
+    public void initializeLogFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile))) {
             writer.write("Player " + playerId + " initial hand: " + handToString() + "\n");
         } catch (IOException e) {
@@ -72,23 +87,37 @@ public class Player {
      * Executes the player's turn by drawing, discarding, and logging actions.
      */
     public void playTurn() {
-        if (!gameInProgress) return;
+        while (gameInProgress) {
+            synchronized (this) {
+                if (isWinningCondition()) {
+                    writeToFile("Player " + playerId + " wins with hand: " + handToString() + "\n");
+                    gameInProgress = false; // End the game
+                    return;
+                }
 
-        try {
-            // Draw a card from the left deck
-            Card drawnCard = leftDeck.drawCard();
-            hand.add(drawnCard);
-            writeToFile("Player " + playerId + " draws a " + drawnCard.getValue() + " from deck " + leftDeck.getDeckId() + "\n");
+                try {
+                    // Draw a card
+                    Card drawnCard = leftDeck.drawCard();
+                    hand.add(drawnCard);
+                    writeToFile("Player " + playerId + " draws a " + drawnCard.getValue() + " from deck " + leftDeck.getDeckId() + "\n");
 
-            // Discard a card to the right deck
-            Card discardedCard = discardCard();
-            rightDeck.addCard(discardedCard);
-            writeToFile("Player " + playerId + " discards a " + discardedCard.getValue() + " to deck " + rightDeck.getDeckId() + "\n");
+                    // Discard a card
+                    Card discardedCard = discardCard();
+                    rightDeck.addCard(discardedCard);
+                    writeToFile("Player " + playerId + " discards a " + discardedCard.getValue() + " to deck " + rightDeck.getDeckId() + "\n");
 
-            // Log the current hand
-            writeToFile("Player " + playerId + " current hand is " + handToString() + "\n");
-        } catch (Exception e) {
-            System.err.println("Error during player " + playerId + "'s turn: " + e.getMessage());
+                    // Log the updated hand
+                    writeToFile("Player " + playerId + " current hand is " + handToString() + "\n");
+                } catch (Exception e) {
+                    System.err.println("Error during player " + playerId + "'s turn: " + e.getMessage());
+                }
+            }
+
+            try {
+                Thread.sleep(100); // Simulate turn delay
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -98,7 +127,7 @@ public class Player {
      * @return True if the player meets the winning condition, false otherwise.
      */
     public boolean isWinningCondition() {
-        int[] cardCounts = new int[100]; // Assuming card values are within a reasonable range
+        int[] cardCounts = new int[100]; // Assuming card values are 0–99
         for (Card card : hand) {
             cardCounts[card.getValue()]++;
             if (cardCounts[card.getValue()] == 4) {
@@ -131,19 +160,21 @@ public class Player {
     }
 
     /**
-     * Removes a card from the player's hand based on the strategy and returns it.
+     * Removes a card from the player's hand based on the strategy and returns
+     * it.
      *
      * @return The card to be discarded.
      */
     public Card discardCard() {
+         << << << < HEAD
         if (hand.isEmpty()) {
             throw new IllegalStateException("Cannot discard from an empty hand");
         };
 
-        for (Card card : hand) {
-            if (card.getValue() != preferredDenomination) {
-                hand.remove(card);
-                return card;
+        for (int i = 0; i < hand.size(); i++) {
+            if (hand.get(i).getValue() != preferredDenomination) {
+                return hand.remove(i); // Remove and return the first non-preferred card
+                 >>> >>> > 07c434f8bc7ff45d5b94ac1b469c837df4f3644b
             }
         }
         // Fallback: Discard the first card if all match the preferred denomination
@@ -167,7 +198,9 @@ public class Player {
      * Signals the player that the game has ended.
      */
     public void endGame() {
-        this.gameInProgress = false;
+        synchronized (this) {
+            this.gameInProgress = false;
+        }
     }
 
     /**
@@ -184,19 +217,19 @@ public class Player {
      *
      * @return The player's preferred denomination.
      */
-    public  int getPreferredDenomination(){
+    public int getPreferredDenomination() {
         return preferredDenomination;
     }
 
-    public  Deck getLeftDeck(){
+    public Deck getLeftDeck() {
         return leftDeck;
     }
 
-    public  Deck getRightDeck(){
+    public Deck getRightDeck() {
         return rightDeck;
     }
 
-    public  List<Card> getHand(){
+    public List<Card> getHand() {
         return hand;
     }
 
