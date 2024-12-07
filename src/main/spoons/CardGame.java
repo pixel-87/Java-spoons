@@ -56,7 +56,7 @@ public class CardGame {
 
             // Prompt for the location of the pack to load
             System.out.println("Please enter the location of pack to load:");
-            String filePath = scanner.nextLine();
+            String filePath = "src\\main\\resources\\" + scanner.nextLine();
 
             scanner.close();
 
@@ -129,7 +129,7 @@ public class CardGame {
         }
 
         // Distribute cards to decks
-        for (int i = numCardsPerPlayer * numPlayers; i < cardPack.size(); i++) {
+        for (int i = numCardsPerDeck * numPlayers; i < cardPack.size(); i++) {
             decks.get(i % numPlayers).addCard(cardPack.get(i));
         }
     }
@@ -196,4 +196,6 @@ public class CardGame {
     public List<Deck> getDecks() {
         return decks;
     }
+
+
 }
