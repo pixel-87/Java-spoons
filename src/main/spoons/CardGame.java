@@ -58,7 +58,7 @@ public class CardGame {
 
             // Prompt for the location of the pack to load
             System.out.println("Please enter the location of pack to load:");
-            String filepath = scanner.nextLine();
+            String filePath = scanner.nextLine();
 
             // Closes the scanner since no more input will be read by the user
             scanner.close();
