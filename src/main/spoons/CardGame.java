@@ -37,6 +37,9 @@ public class CardGame {
      * @param cardPack   List of cards in the game.
      */
     public CardGame(int numPlayers, List<Card> cardPack) {
+        if (cardPack.size() < numPlayers * 8) {
+            throw new IllegalArgumentException("Invalid card pack: insufficient cards.");
+        }
         this.numPlayers = numPlayers;
         this.cardPack = cardPack;
         this.players = new ArrayList<>();
@@ -89,6 +92,10 @@ public class CardGame {
     public static List<Card> loadPack(String filePath) throws IOException {
         List<String> lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filePath));
 
+        if (lines.isEmpty()) {
+            throw new IllegalArgumentException("Card pack file is empty");
+        }
+
         // Convert each line to an integer and wrap it in a Card object
         List<Card> cardPack = new ArrayList<>();
         for (String line : lines) {
@@ -130,16 +137,23 @@ public class CardGame {
         int numCardsPerPlayer = 4;
         int numCardsPerDeck = 4;
 
-        // Distribute cards to players
-        for (int i = 0; i < numCardsPerPlayer * numPlayers; i++) {
-            players.get(i % numPlayers).receiveCard(cardPack.get(i));
+        int cardIndex = 0;
+
+        // Distribute 4 cards to each player
+        for (Player player : players) {
+            for (int j = 0; j < numCardsPerPlayer; j++) {
+                player.receiveCard(cardPack.get(cardIndex++));
+            }
         }
 
-        // Distribute cards to decks
-        for (int i = numCardsPerDeck * numPlayers; i < cardPack.size(); i++) {
-            decks.get(i % numPlayers).addCard(cardPack.get(i));
+        // Distribute 4 cards to each deck
+        for (Deck deck : decks) {
+            for (int j = 0; j < numCardsPerDeck; j++) {
+                deck.addCard(cardPack.get(cardIndex++));
+            }
         }
     }
+
 
     /**
      * Starts the game by initiating threads for each player.
