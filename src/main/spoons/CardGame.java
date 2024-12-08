@@ -1,7 +1,5 @@
 // Updated CardGame Class
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -77,7 +75,7 @@ public class CardGame {
             }
 
             CardGame game = new CardGame(numPlayers, cardPack);
-            game.initializeGame();
+            game.initialiseGame();
             game.startGame();
         } catch (Exception e) {
             System.err.println("Error initialising game: " + e.getMessage());
@@ -228,15 +226,6 @@ public class CardGame {
                 endGame();
             }
         }
-    }
-
-    /**
-     * Checks if the game is over.
-     *
-     * @return True if the game is over, false otherwise.
-     */
-    public boolean isGameOver() {
-        return gameOver;
     }
 
     /**

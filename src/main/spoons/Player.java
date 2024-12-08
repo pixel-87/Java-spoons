@@ -51,17 +51,17 @@ public class Player {
         this.game = game;
         this.playerFile = new File("player" + playerId + "_output.txt");
         this.gameInProgress = true;
-        initializeLogFile();  // Initialize the log file for the player
+        initialiseLogFile();  // Initialise the log file for the player
     }
 
     /**
-     * Initializes the player's log file with initial hand information.
+     * Initialises the player's log file with initial hand information.
      */
-    public void initializeLogFile() {
+    public void initialiseLogFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile))) {
             writer.write("Player " + playerId + " initial hand: " + handToString() + "\n");
         } catch (IOException e) {
-            System.err.println("Error initializing log file for player " + playerId);
+            System.err.println("Error initialising log file for player " + playerId);
         }
     }
 
@@ -181,7 +181,7 @@ public class Player {
                 return hand.remove(i);  // Discard the first card not matching the preferred denomination
             }
         }
-        return hand.remove(0);  // If all cards match the preferred denomination, discard the first one
+        return hand.removeFirst();  // If all cards match the preferred denomination, discard the first one
     }
 
     /**
