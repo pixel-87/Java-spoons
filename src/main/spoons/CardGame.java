@@ -11,7 +11,7 @@ import java.io.FileWriter;
 
 /**
  * Represents the main CardGame class to manage the game.
- * Handles initialization, gameplay flow, and results processing.
+ * Handles initialisation, gameplay flow, and results processing.
  */
 public class CardGame {
 
@@ -52,7 +52,7 @@ public class CardGame {
     }
 
     /**
-     * Entry point of the game. Initializes and starts the game based on user input.
+     * Entry point of the game. Initialises and starts the game based on user input.
      *
      * @param args Command-line arguments.
      */
@@ -80,7 +80,7 @@ public class CardGame {
             game.initializeGame();
             game.startGame();
         } catch (Exception e) {
-            System.err.println("Error initializing game: " + e.getMessage());
+            System.err.println("Error initialising game: " + e.getMessage());
         }
     }
 
@@ -114,9 +114,9 @@ public class CardGame {
     }
 
     /**
-     * Initializes the game by creating players and decks and distributing cards.
+     * Initialises the game by creating players and decks and distributing cards.
      */
-    public void initializeGame() {
+    public void initialiseGame() {
         for (int i = 0; i < numPlayers; i++) {
             decks.add(new Deck(i + 1));
         }
@@ -129,7 +129,7 @@ public class CardGame {
         distributeCards();
 
         for (Player player : players) {
-            player.initializeLogFile();
+            player.initialiseLogFile();
         }
     }
 

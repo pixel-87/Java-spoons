@@ -34,7 +34,7 @@ public class Player {
     private final CardGame game;
 
     /**
-     * Constructor to initialize a player with basic attributes and a log file.
+     * Constructor to initialise a player with basic attributes and a log file.
      *
      * @param playerId Unique ID for the player
      * @param preferredDenomination The denomination this player prefers for discarding

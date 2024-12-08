@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  */
 public class Deck {
     private final int deckId;
-    // ConcurrentLinkedQueue does all the locking, no need to use synchronized or specific lock method
+    // ConcurrentLinkedQueue does all the locking, no need to use synchronised or specific lock method
     private final ConcurrentLinkedQueue<Card> cards = new ConcurrentLinkedQueue<>();
 
     /**
