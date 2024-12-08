@@ -144,4 +144,20 @@ public class Player {
     public List<Card> getHand() {
         return hand;
     }
+
+    public int getPreferredDenomination() {
+        return preferredDenomination;
+    }
+
+    public void setPreferredDenomination(int newPreferredDenomination ) {
+        this.preferredDenomination = newPreferredDenomination;
+    }
+
+    public Deck getLeftDeck() {
+        return leftDeck;
+    }
+
+    public Deck getRightDeck(){
+        return rightDeck;
+    }
 }
