@@ -166,7 +166,6 @@ public class Player {
      * @return The card to be discarded.
      */
     public Card discardCard() {
-         << << << < HEAD
         if (hand.isEmpty()) {
             throw new IllegalStateException("Cannot discard from an empty hand");
         };
@@ -174,7 +173,6 @@ public class Player {
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).getValue() != preferredDenomination) {
                 return hand.remove(i); // Remove and return the first non-preferred card
-                 >>> >>> > 07c434f8bc7ff45d5b94ac1b469c837df4f3644b
             }
         }
         // Fallback: Discard the first card if all match the preferred denomination
