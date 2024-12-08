@@ -90,6 +90,10 @@ public class CardGame {
     public static List<Card> loadPack(String filePath) throws IOException {
         List<String> lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filePath));
 
+        if (lines.isEmpty()) {
+            throw new IllegalArgumentException("Card pack file is empty.");
+        }
+
         // Convert each line to an integer and wrap it in a Card object
         List<Card> cardPack = new ArrayList<>();
         for (String line : lines) {
@@ -137,7 +141,7 @@ public class CardGame {
         }
 
         // Distribute cards to decks
-        for (int i = numCardsPerDeck * numPlayers; i < cardPack.size(); i++) {
+        for (int i = numCardsPerPlayer * numPlayers; i < numCardsPerPlayer * numPlayers + numCardsPerDeck * numPlayers; i++) {
             decks.get(i % numPlayers).addCard(cardPack.get(i));
         }
     }

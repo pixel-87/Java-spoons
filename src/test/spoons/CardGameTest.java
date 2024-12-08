@@ -116,11 +116,11 @@ public class CardGameTest {
     @Test
     public void testDistributeCardsInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
-        CardGame game = new CardGame(4, cardPack);
 
-        // Assert that an IllegalArgumentException is thrown when initializeGame() is called
-        assertThrows(IllegalArgumentException.class, game::initializeGame);
+        // Assert that an IllegalArgumentException is thrown when creating a new CardGame
+        assertThrows(IllegalArgumentException.class, () -> new CardGame(4, cardPack));
     }
+
 
     // Boundary test: Large card pack
     @Test
