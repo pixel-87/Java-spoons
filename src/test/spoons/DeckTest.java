@@ -67,7 +67,7 @@ class DeckTest {
         Runnable drawAndDiscardTask = () -> {
             for (int i = 1; i <= numCards; i++) {
                 Card DrawnCard = deck.drawCard();
-                boolean hasWon = false; // Simplified victory condition check, fully implemented in ____ class.
+                boolean hasWon = false; // Simplified victory condition check, fully implemented in CardGame class.
                 if (hasWon) {
                     break;
                 }

@@ -10,26 +10,19 @@ import java.util.List;
  * Each player has a unique ID, a hand of cards, preferences, and interacts with adjacent decks.
  */
 public class Player {
-
     // Player's unique identifier
     private final int playerId;
-
     // List representing the player's hand of cards
     private final List<Card> hand;
-
     // Player's preferred card denomination (for discarding purposes)
     private int preferredDenomination;
-
     // References to the left and right decks the player interacts with
     private final Deck leftDeck;
     private final Deck rightDeck;
-
     // Log file for recording player's actions
     private final File playerFile;
-
     // Flag indicating if the player is still in a game
     private volatile boolean gameInProgress;
-
     // Reference to the game this player is a part of
     private final CardGame game;
 
@@ -51,6 +44,7 @@ public class Player {
         this.game = game;
         this.playerFile = new File("player" + playerId + "_output.txt");
         this.gameInProgress = true;
+
         initialiseLogFile();  // Initialise the log file for the player
     }
 
