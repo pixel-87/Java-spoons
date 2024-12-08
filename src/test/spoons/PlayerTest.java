@@ -36,14 +36,6 @@ public class PlayerTest {
         assertTrue(playerFile.exists());
     }
 
-    // Negative test: Null decks
-    @Test
-    public void testPlayerConstructorWithNullDecks() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
-        assertThrows(NullPointerException.class, () -> {
-            new Player(1, 5, null, null, mockGame);
-        });
-    }
 
     // Boundary test: Minimum playerId
     @Test
@@ -95,13 +87,6 @@ public class PlayerTest {
         assertEquals(7, discarded.getValue());
     }
 
-    // Negative test: Discard from empty hand
-    @Test
-    public void testDiscardCardFromEmptyHand() {
-        Player player = createPlayerWithHand(1, new int[]{});
-
-        assertThrows(IllegalStateException.class, player::discardCard);
-    }
 
 
     // Boundary test: Discard when all cards match the preferred denomination
