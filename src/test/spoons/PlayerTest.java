@@ -20,7 +20,7 @@ public class PlayerTest {
     // Positive test: Valid player creation
     @Test
     public void testPlayerConstructorValid() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
+        CardGame mockGame = new CardGame(2, new ArrayList<>(16));
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
         Player player = new Player(1, 5, leftDeck, rightDeck, mockGame);

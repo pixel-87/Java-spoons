@@ -5,6 +5,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 
 /**
  * Represents the main CardGame class to manage the game.
@@ -37,7 +40,7 @@ public class CardGame {
      * @param cardPack   List of cards in the game.
      */
     public CardGame(int numPlayers, List<Card> cardPack) {
-        if (cardPack.size() < numPlayers * 8) {
+        if (cardPack.size() == numPlayers * 8) {
             throw new IllegalArgumentException("Invalid card pack: insufficient cards.");
         }
         this.numPlayers = numPlayers;
@@ -177,13 +180,40 @@ public class CardGame {
     }
 
     /**
-     * Ends the game, signals players, and logs results.
+     * Ends the game, signals players, logs results, and outputs deck contents.
      */
     public void endGame() {
         for (Player player : players) {
             player.endGame();
         }
+
+        // Log the contents of each deck at the end of the game
+        logDeckContents();
     }
+
+    /**
+     * Logs the contents of each deck at the end of the game to a file.
+     */
+    public void logDeckContents() {
+        for (Deck deck : decks) {
+            // Prepare the filename for the deck's output file
+            String filename = "deck" + deck.getDeckId() + "_output.txt";
+            File deckFile = new File(filename);
+
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(deckFile))) {
+                // Write the contents of the deck to the file
+                writer.write("deck" + deck.getDeckId() + " contents: ");
+                List<Card> deckCards = deck.getCards();
+                for (Card card : deckCards) {
+                    writer.write(card.getValue() + " ");
+                }
+                writer.newLine();
+            } catch (IOException e) {
+                System.err.println("Error writing to deck output file: " + e.getMessage());
+            }
+        }
+    }
+
 
     /**
      * Signals that the game is over and sets the winner.
