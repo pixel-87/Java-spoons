@@ -1,6 +1,6 @@
 University of Exeter Software Development Coursework
 
-A multi-threaded card playing simulation (Spoons).
+A multithreaded card playing simulation (Spoons).
 
 Game will start with n players and decks, where n is positive.
 

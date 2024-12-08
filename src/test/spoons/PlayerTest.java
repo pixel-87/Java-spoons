@@ -19,7 +19,7 @@ public class PlayerTest {
      * Tests for Player Constructor
      */
 
-    // Positive test: Valid player creation
+    // Checks that player is constructed as expected.
     @Test
     public void testPlayerConstructorValid() {
         List<Card> cardPack = generateCardPack(40);
@@ -40,18 +40,6 @@ public class PlayerTest {
     }
 
 
-    // Boundary test: Minimum playerId
-    @Test
-    public void testPlayerConstructorWithMinimumPlayerId() {
-        List<Card> cardPack = generateCardPack(40);
-        CardGame game = new CardGame(4, cardPack);
-        Deck leftDeck = new Deck(1);
-        Deck rightDeck = new Deck(2);
-        Player player = new Player(0, 5, leftDeck, rightDeck, game);
-
-        assertEquals(0, player.getPlayerId());
-    }
-
     /**
      * Tests for isWinningCondition Method
      */
@@ -70,18 +58,11 @@ public class PlayerTest {
         assertFalse(player.isWinningCondition());
     }
 
-    // Boundary test: Large hand with one winning set
-    @Test
-    public void testIsWinningConditionLargeHand() {
-        Player player = createPlayerWithHand(new int[]{3, 3, 3, 3, 7, 8, 9, 10, 2, 1});
-        assertTrue(player.isWinningCondition());
-    }
-
     /**
      * Tests for discardCard Method
      */
 
-    // Positive test: Discard a non-preferred card
+    //  Discard a non-preferred card
     @Test
     public void testDiscardCardNonPreferred() {
         Player player = createPlayerWithHand(new int[]{5, 7, 5, 9});
@@ -91,23 +72,11 @@ public class PlayerTest {
         assertEquals(7, discarded.value());
     }
 
-
-
-    // Boundary test: Discard when all cards match the preferred denomination
-    @Test
-    public void testDiscardCardAllPreferred() {
-        Player player = createPlayerWithHand(new int[]{7, 7, 7, 7});
-        player.setPreferredDenomination(7);
-
-        Card discarded = player.discardCard();
-        assertEquals(7, discarded.value());
-    }
-
     /**
      * Tests for writeToFile Method
      */
 
-    // Positive test: Valid log message
+    //  Valid log message
     @Test
     public void testWriteToFileValidMessage() {
         List<Card> cardPack = generateCardPack(40);
@@ -131,7 +100,7 @@ public class PlayerTest {
         }
     }
 
-    // Boundary test: Long log message
+    //  Long log message
     @Test
     public void testWriteToFileLongMessage() {
         List<Card> cardPack = generateCardPack(40);

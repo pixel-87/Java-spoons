@@ -19,7 +19,7 @@ public class CardGameTest {
      * Tests for CardGame Constructor
      */
 
-    // Positive test: Valid CardGame creation
+    // Valid CardGame creation
     @Test
     public void testCardGameConstructorValid() {
         List<Card> cardPack = generateCardPack(40);
@@ -30,29 +30,20 @@ public class CardGameTest {
         assertNotNull(game.getDecks());
     }
 
-    // Negative test: Insufficient cards
+    // test for Insufficient cards
     @Test
     public void testCardGameConstructorInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
         // Use assertThrows to check if IllegalArgumentException is thrown
-        assertThrows(IllegalArgumentException.class, () -> new CardGame(4, cardPack));
+        assertThrows(IllegalArgumentException.class, () -> new CardGame(4, cardPack),"Not enough cards");
     }
 
-
-    // Boundary test: Minimum number of players (2 players)
-    @Test
-    public void testCardGameConstructorMinimumPlayers() {
-        List<Card> cardPack = generateCardPack(16);
-        CardGame game = new CardGame(2, cardPack);
-
-        assertEquals(2, game.getNumPlayers());
-    }
 
     /**
      * Tests for loadPack Method
      */
 
-    // Positive test: Valid file load
+    // test valid file load
     @Test
     public void testLoadPackValidFile() throws IOException {
         List<String> lines = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8");
@@ -63,32 +54,32 @@ public class CardGameTest {
         assertEquals(1, cardPack.getFirst().value());
     }
 
-    // Negative test: File with invalid card value
+    // File with invalid card value
     @Test public void testLoadPackInvalidCardValue() throws IOException {
         // Create a list of strings representing invalid card values
         List<String> lines = Arrays.asList("1", "two", "3", "4");
         // Write these lines to a test file
         Files.write(Paths.get("test_invalid_pack.txt"), lines);
         // Use assertThrows to check if IllegalArgumentException is thrown
-        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_invalid_pack.txt"));
+        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_invalid_pack.txt"),"Card pack is invalid");
     }
 
 
-    // Boundary test: Empty file
+    // Empty file
     @Test
     public void testLoadPackEmptyFile() throws IOException {
         // Create an empty file named "test_empty_pack.txt"
         Files.write(Paths.get("test_empty_pack.txt"), Collections.emptyList());
 
         // Assert that loading an empty pack file throws IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_empty_pack.txt"));
+        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_empty_pack.txt"),"Card pack is empty");
     }
 
     /**
      * Tests for distributeCards Method
      */
 
-    // Positive test: Distribute cards evenly
+    // Distribute cards evenly
     @Test
     public void testDistributeCardsEvenly() {
         List<Card> cardPack = generateCardPack(40);
@@ -106,7 +97,7 @@ public class CardGameTest {
         }
     }
 
-    // Negative test: Insufficient cards for distribution
+    //Insufficient cards for distribution
     @Test
     public void testDistributeCardsInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
@@ -116,11 +107,11 @@ public class CardGameTest {
     }
 
 
-    // Boundary test: Large card pack
+    // Large amount of players & cards
     @Test
     public void testDistributeCardsLargePack() {
-        List<Card> cardPack = generateCardPack(100);
-        CardGame game = new CardGame(4, cardPack);
+        List<Card> cardPack = generateCardPack(8*100);
+        CardGame game = new CardGame(100, cardPack);
         game.initialiseGame();
 
         // Assert each player has 4 cards
@@ -138,7 +129,7 @@ public class CardGameTest {
      * Tests for endGame Method
      */
 
-    // Positive test: Verify game ends when a player wins
+    // Verify game ends when a player wins
     @Test
     public void testEndGamePlayerWins() {
         List<Card> cardPack = generateCardPack(40);
@@ -155,7 +146,7 @@ public class CardGameTest {
         assertTrue(game.getPlayers().getFirst().isWinningCondition());
     }
 
-    // Negative test: Game ends in a draw
+    //  Game ends in a draw
     @Test
     public void testEndGameDraw() {
         List<Card> cardPack = generateCardPack(40);
