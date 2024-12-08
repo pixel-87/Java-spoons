@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -19,9 +20,10 @@ public class PlayerTest {
     // Positive test: Valid player creation
     @Test
     public void testPlayerConstructorValid() {
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        Player player = new Player(1, 5, leftDeck, rightDeck);
+        Player player = new Player(1, 5, leftDeck, rightDeck, mockGame);
 
         assertEquals(1, player.getPlayerId());
         assertTrue(player.getHand().isEmpty());
@@ -37,17 +39,19 @@ public class PlayerTest {
     // Negative test: Null decks
     @Test
     public void testPlayerConstructorWithNullDecks() {
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
         assertThrows(NullPointerException.class, () -> {
-            new Player(1, 5, null, null);
+            new Player(1, 5, null, null, mockGame);
         });
     }
 
     // Boundary test: Minimum playerId
     @Test
     public void testPlayerConstructorWithMinimumPlayerId() {
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        Player player = new Player(0, 5, leftDeck, rightDeck);
+        Player player = new Player(0, 5, leftDeck, rightDeck, mockGame);
 
         assertEquals(0, player.getPlayerId());
     }
@@ -117,7 +121,8 @@ public class PlayerTest {
     // Positive test: Valid log message
     @Test
     public void testWriteToFileValidMessage() {
-        Player player = new Player(1, 5, new Deck(1), new Deck(2));
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
+        Player player = new Player(1, 5, new Deck(1), new Deck(2), mockGame);
         player.writeToFile("Test log message.");
 
         // Check the file content
@@ -139,7 +144,8 @@ public class PlayerTest {
     // Boundary test: Long log message
     @Test
     public void testWriteToFileLongMessage() {
-        Player player = new Player(1, 5, new Deck(1), new Deck(2));
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
+        Player player = new Player(1, 5, new Deck(1), new Deck(2), mockGame);
         String longMessage = "A".repeat(1000);
         player.writeToFile(longMessage);
 
@@ -164,7 +170,8 @@ public class PlayerTest {
     private Player createPlayerWithHand(int playerId, int[] cardValues) {
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        Player player = new Player(playerId, 5, leftDeck, rightDeck);
+        CardGame mockGame = new CardGame(2, new ArrayList<>());
+        Player player = new Player(playerId, 5, leftDeck, rightDeck, mockGame);
 
         for (int value : cardValues) {
             player.receiveCard(new Card(value));
