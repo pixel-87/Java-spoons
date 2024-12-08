@@ -96,7 +96,7 @@ public class Player {
                 }
             }
 
-            // Sleep for a brief moment to allow the game to proceed
+            // This is necessary for checking if another player has won or not idk why
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
