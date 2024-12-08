@@ -28,7 +28,6 @@ public class CardGameTest {
         assertEquals(4, game.getNumPlayers());
         assertNotNull(game.getPlayers());
         assertNotNull(game.getDecks());
-        assertNotNull(game.getNumPlayers());
     }
 
     // Negative test: Insufficient cards
@@ -36,8 +35,7 @@ public class CardGameTest {
     public void testCardGameConstructorInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
         // Use assertThrows to check if IllegalArgumentException is thrown
-        assertThrows(IllegalArgumentException.class, () -> {
-            new CardGame(4, cardPack); });
+        assertThrows(IllegalArgumentException.class, () -> new CardGame(4, cardPack));
     }
 
 
@@ -62,7 +60,7 @@ public class CardGameTest {
 
         List<Card> cardPack = CardGame.loadPack("test_pack.txt");
         assertEquals(8, cardPack.size());
-        assertEquals(1, cardPack.get(0).getValue());
+        assertEquals(1, cardPack.getFirst().getValue());
     }
 
     // Negative test: File with invalid card value
@@ -72,9 +70,7 @@ public class CardGameTest {
         // Write these lines to a test file
         Files.write(Paths.get("test_invalid_pack.txt"), lines);
         // Use assertThrows to check if IllegalArgumentException is thrown
-        assertThrows(IllegalArgumentException.class, () -> {
-            CardGame.loadPack("test_invalid_pack.txt");
-        });
+        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_invalid_pack.txt"));
     }
 
 
@@ -85,9 +81,7 @@ public class CardGameTest {
         Files.write(Paths.get("test_empty_pack.txt"), Collections.emptyList());
 
         // Assert that loading an empty pack file throws IllegalArgumentException
-        assertThrows(IllegalArgumentException.class, () -> {
-            CardGame.loadPack("test_empty_pack.txt");
-        });
+        assertThrows(IllegalArgumentException.class, () -> CardGame.loadPack("test_empty_pack.txt"));
     }
 
     /**
@@ -152,13 +146,13 @@ public class CardGameTest {
         game.initializeGame();
 
         // Simulate a player having a winning hand
-        game.getPlayers().get(0).receiveCard(new Card(5));
-        game.getPlayers().get(0).receiveCard(new Card(5));
-        game.getPlayers().get(0).receiveCard(new Card(5));
-        game.getPlayers().get(0).receiveCard(new Card(5));
+        game.getPlayers().getFirst().receiveCard(new Card(5));
+        game.getPlayers().getFirst().receiveCard(new Card(5));
+        game.getPlayers().getFirst().receiveCard(new Card(5));
+        game.getPlayers().getFirst().receiveCard(new Card(5));
 
         game.endGame();
-        assertTrue(game.getPlayers().get(0).isWinningCondition());
+        assertTrue(game.getPlayers().getFirst().isWinningCondition());
     }
 
     // Negative test: Game ends in a draw
