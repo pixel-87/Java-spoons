@@ -11,39 +11,15 @@ import java.util.List;
  */
 public class Player {
 
-    /** Unique identifier for the player. */
     private final int playerId;
-
-    /** Collection of cards representing the player's hand. */
     private final List<Card> hand;
-
-    /** The card denomination the player prioritizes (based on their ID). */
     private int preferredDenomination;
-
-    /** Reference to the deck from which the player draws cards. */
     private final Deck leftDeck;
-
-    /** Reference to the deck where the player discards cards. */
     private final Deck rightDeck;
-
-    /** The player’s log file for recording actions (e.g., player1_output.txt). */
     private final File playerFile;
-
-    /** Flag to indicate whether the game is still active. */
     private volatile boolean gameInProgress;
-
-    /** Reference to the CardGame instance. */
     private final CardGame game;
 
-    /**
-     * Constructor for the Player class.
-     *
-     * @param playerId              Unique identifier for the player.
-     * @param preferredDenomination Preferred card denomination for the player.
-     * @param leftDeck              Reference to the deck the player draws from.
-     * @param rightDeck             Reference to the deck the player discards to.
-     * @param game                  Reference to the main CardGame instance.
-     */
     public Player(int playerId, int preferredDenomination, Deck leftDeck, Deck rightDeck, CardGame game) {
         this.playerId = playerId;
         this.hand = new ArrayList<>();
@@ -56,10 +32,6 @@ public class Player {
         initializeLogFile();
     }
 
-    /**
-     * Initializes the log file for the player.
-     * Creates a new file and writes the initial header information.
-     */
     public void initializeLogFile() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile))) {
             writer.write("Player " + playerId + " initial hand: " + handToString() + "\n");
@@ -68,31 +40,25 @@ public class Player {
         }
     }
 
-    /**
-     * Executes the player's turn by drawing, discarding, and logging actions.
-     */
     public void playTurn() {
         while (gameInProgress) {
             synchronized (this) {
                 if (isWinningCondition()) {
                     writeToFile("Player " + playerId + " wins with hand: " + handToString() + "\n");
                     game.signalWinner(playerId);
-                    gameInProgress = false; // End the game for this player
+                    notifyOtherPlayers(playerId);
+                    gameInProgress = false;
                     return;
                 }
 
                 try {
-                    // Draw a card
                     Card drawnCard = leftDeck.drawCard();
                     hand.add(drawnCard);
                     writeToFile("Player " + playerId + " draws a " + drawnCard.getValue() + " from deck " + leftDeck.getDeckId() + "\n");
 
-                    // Discard a card
                     Card discardedCard = discardCard();
                     rightDeck.addCard(discardedCard);
                     writeToFile("Player " + playerId + " discards a " + discardedCard.getValue() + " to deck " + rightDeck.getDeckId() + "\n");
-
-                    // Log the updated hand
                     writeToFile("Player " + playerId + " current hand is " + handToString() + "\n");
                 } catch (Exception e) {
                     System.err.println("Error during player " + playerId + "'s turn: " + e.getMessage());
@@ -100,20 +66,15 @@ public class Player {
             }
 
             try {
-                Thread.sleep(100); // Simulate turn delay
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         }
     }
 
-    /**
-     * Checks if the player's hand contains four cards of the same value.
-     *
-     * @return True if the player meets the winning condition, false otherwise.
-     */
     public boolean isWinningCondition() {
-        int[] cardCounts = new int[100]; // Assuming card values are 0–99
+        int[] cardCounts = new int[100];
         for (Card card : hand) {
             cardCounts[card.getValue()]++;
             if (cardCounts[card.getValue()] == 4) {
@@ -123,11 +84,23 @@ public class Player {
         return false;
     }
 
-    /**
-     * Writes a message to the player's log file.
-     *
-     * @param message The message to be written.
-     */
+    public void notifyOtherPlayers(int winnerId) {
+        List<Player> allPlayers = game.getPlayers();
+        for (Player player : allPlayers) {
+            if (player.getPlayerId() != winnerId) {
+                player.logWinnerNotification(winnerId);
+                player.endGame();
+            }
+        }
+    }
+
+    public void logWinnerNotification(int winnerId) {
+        String message = "Player " + winnerId + " has informed player " + playerId + " that player " + winnerId + " has won.\n" +
+                "Player " + playerId + " exits.\n" +
+                "Player " + playerId + " hand: " + handToString() + "\n";
+        writeToFile(message);
+    }
+
     public void writeToFile(String message) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(playerFile, true))) {
             writer.write(message);
@@ -136,35 +109,19 @@ public class Player {
         }
     }
 
-    /**
-     * Receives a card and adds it to the player's hand.
-     *
-     * @param card The card to be added.
-     */
     public void receiveCard(Card card) {
         hand.add(card);
     }
 
-    /**
-     * Removes a card from the player's hand based on the strategy and returns it.
-     *
-     * @return The card to be discarded.
-     */
     public Card discardCard() {
         for (int i = 0; i < hand.size(); i++) {
             if (hand.get(i).getValue() != preferredDenomination) {
-                return hand.remove(i); // Remove and return the first non-preferred card
+                return hand.remove(i);
             }
         }
-        // Fallback: Discard the first card if all match the preferred denomination
         return hand.remove(0);
     }
 
-    /**
-     * Converts the player's hand to a string representation.
-     *
-     * @return A string representation of the player's hand.
-     */
     private String handToString() {
         StringBuilder sb = new StringBuilder();
         for (Card card : hand) {
@@ -173,20 +130,12 @@ public class Player {
         return sb.toString().trim();
     }
 
-    /**
-     * Signals the player that the game has ended.
-     */
     public void endGame() {
         synchronized (this) {
             this.gameInProgress = false;
         }
     }
 
-    /**
-     * Getter for the player ID.
-     *
-     * @return The player's unique ID.
-     */
     public int getPlayerId() {
         return playerId;
     }
