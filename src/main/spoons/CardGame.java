@@ -39,6 +39,11 @@ public class CardGame {
         this.players = new ArrayList<>();
         this.decks = new ArrayList<>();
         this.gameThreads = new ArrayList<>();
+
+        int requiredCards = numPlayers * 8;
+        if (cardPack.size() < requiredCards) {
+            throw new IllegalArgumentException("Invalid card pack size");
+        }
     }
 
     /**

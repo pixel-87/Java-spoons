@@ -1,7 +1,10 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,11 +32,14 @@ public class CardGameTest {
     }
 
     // Negative test: Insufficient cards
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCardGameConstructorInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
-        new CardGame(4, cardPack);
+        // Use assertThrows to check if IllegalArgumentException is thrown
+        assertThrows(IllegalArgumentException.class, () -> {
+            new CardGame(4, cardPack); });
     }
+
 
     // Boundary test: Minimum number of players (2 players)
     @Test
@@ -60,21 +66,28 @@ public class CardGameTest {
     }
 
     // Negative test: File with invalid card value
-    @Test(expected = IllegalArgumentException.class)
-    public void testLoadPackInvalidCardValue() throws IOException {
+    @Test public void testLoadPackInvalidCardValue() throws IOException {
+        // Create a list of strings representing invalid card values
         List<String> lines = Arrays.asList("1", "two", "3", "4");
-        java.nio.file.Files.write(java.nio.file.Paths.get("test_invalid_pack.txt"), lines);
-
-        CardGame.loadPack("test_invalid_pack.txt");
+        // Write these lines to a test file
+        Files.write(Paths.get("test_invalid_pack.txt"), lines);
+        // Use assertThrows to check if IllegalArgumentException is thrown
+        assertThrows(IllegalArgumentException.class, () -> {
+            CardGame.loadPack("test_invalid_pack.txt");
+        });
     }
 
-    // Boundary test: Empty file
-    @Test(expected = IllegalArgumentException.class)
-    public void testLoadPackEmptyFile() throws IOException {
-        List<String> lines = Arrays.asList();
-        java.nio.file.Files.write(java.nio.file.Paths.get("test_empty_pack.txt"), lines);
 
-        CardGame.loadPack("test_empty_pack.txt");
+    // Boundary test: Empty file
+    @Test
+    public void testLoadPackEmptyFile() throws IOException {
+        // Create an empty file named "test_empty_pack.txt"
+        Files.write(Paths.get("test_empty_pack.txt"), Collections.emptyList());
+
+        // Assert that loading an empty pack file throws IllegalArgumentException
+        assertThrows(IllegalArgumentException.class, () -> {
+            CardGame.loadPack("test_empty_pack.txt");
+        });
     }
 
     /**
@@ -100,11 +113,13 @@ public class CardGameTest {
     }
 
     // Negative test: Insufficient cards for distribution
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testDistributeCardsInsufficientCards() {
         List<Card> cardPack = generateCardPack(10);
         CardGame game = new CardGame(4, cardPack);
-        game.initializeGame();
+
+        // Assert that an IllegalArgumentException is thrown when initializeGame() is called
+        assertThrows(IllegalArgumentException.class, game::initializeGame);
     }
 
     // Boundary test: Large card pack
@@ -151,11 +166,14 @@ public class CardGameTest {
     public void testEndGameDraw() {
         List<Card> cardPack = generateCardPack(40);
         CardGame game = new CardGame(4, cardPack);
+
+        // Initialize and end the game
         game.initializeGame();
         game.endGame();
 
+        // Verify that no player has won the game
         boolean anyPlayerWon = game.getPlayers().stream().anyMatch(Player::isWinningCondition);
-        derty7uk7assertFalse(anyPlayerWon);
+        assertFalse(anyPlayerWon, "No player should win after the game ends in a draw.");
     }
 
     /**
