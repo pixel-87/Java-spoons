@@ -84,12 +84,12 @@ public class Player {
                     // Draw a card from the left deck
                     Card drawnCard = leftDeck.drawCard();
                     hand.add(drawnCard);
-                    writeToFile("Player " + playerId + " draws a " + drawnCard.getValue() + " from deck " + leftDeck.getDeckId() + "\n");
+                    writeToFile("Player " + playerId + " draws a " + drawnCard.value() + " from deck " + leftDeck.getDeckId() + "\n");
 
                     // Discard a card to the right deck
                     Card discardedCard = discardCard();
                     rightDeck.addCard(discardedCard);
-                    writeToFile("Player " + playerId + " discards a " + discardedCard.getValue() + " to deck " + rightDeck.getDeckId() + "\n");
+                    writeToFile("Player " + playerId + " discards a " + discardedCard.value() + " to deck " + rightDeck.getDeckId() + "\n");
                     writeToFile("Player " + playerId + " current hand is " + handToString() + "\n");
                 } catch (Exception e) {
                     System.err.println("Error during player " + playerId + "'s turn: " + e.getMessage());
@@ -113,8 +113,8 @@ public class Player {
     public boolean isWinningCondition() {
         int[] cardCounts = new int[100];  // Array to count the occurrences of each card value
         for (Card card : hand) {
-            cardCounts[card.getValue()]++;
-            if (cardCounts[card.getValue()] == 4) {  // If there are 4 of the same card value, the player wins
+            cardCounts[card.value()]++;
+            if (cardCounts[card.value()] == 4) {  // If there are 4 of the same card value, the player wins
                 return true;
             }
         }
@@ -177,7 +177,7 @@ public class Player {
      */
     public Card discardCard() {
         for (int i = 0; i < hand.size(); i++) {
-            if (hand.get(i).getValue() != preferredDenomination) {
+            if (hand.get(i).value() != preferredDenomination) {
                 return hand.remove(i);  // Discard the first card not matching the preferred denomination
             }
         }
@@ -192,7 +192,7 @@ public class Player {
     private String handToString() {
         StringBuilder sb = new StringBuilder();
         for (Card card : hand) {
-            sb.append(card.getValue()).append(" ");  // Append each card value to the string builder
+            sb.append(card.value()).append(" ");  // Append each card value to the string builder
         }
         return sb.toString().trim();  // Return the string representation of the hand
     }

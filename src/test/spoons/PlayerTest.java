@@ -6,6 +6,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * Test class for the Player class, testing all critical functionality
@@ -20,10 +23,11 @@ public class PlayerTest {
     // Positive test: Valid player creation
     @Test
     public void testPlayerConstructorValid() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>(16));
+        List<Card> cardPack = generateCardPack(40);
+        CardGame game = new CardGame(4, cardPack);
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        Player player = new Player(1, 5, leftDeck, rightDeck, mockGame);
+        Player player = new Player(1, 5, leftDeck, rightDeck, game);
 
         assertEquals(1, player.getPlayerId());
         assertTrue(player.getHand().isEmpty());
@@ -40,10 +44,11 @@ public class PlayerTest {
     // Boundary test: Minimum playerId
     @Test
     public void testPlayerConstructorWithMinimumPlayerId() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
+        List<Card> cardPack = generateCardPack(40);
+        CardGame game = new CardGame(4, cardPack);
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        Player player = new Player(0, 5, leftDeck, rightDeck, mockGame);
+        Player player = new Player(0, 5, leftDeck, rightDeck, game);
 
         assertEquals(0, player.getPlayerId());
     }
@@ -84,7 +89,7 @@ public class PlayerTest {
         player.setPreferredDenomination(5);
 
         Card discarded = player.discardCard();
-        assertEquals(7, discarded.getValue());
+        assertEquals(7, discarded.value());
     }
 
 
@@ -96,7 +101,7 @@ public class PlayerTest {
         player.setPreferredDenomination(7);
 
         Card discarded = player.discardCard();
-        assertEquals(7, discarded.getValue());
+        assertEquals(7, discarded.value());
     }
 
     /**
@@ -106,8 +111,9 @@ public class PlayerTest {
     // Positive test: Valid log message
     @Test
     public void testWriteToFileValidMessage() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
-        Player player = new Player(1, 5, new Deck(1), new Deck(2), mockGame);
+        List<Card> cardPack = generateCardPack(40);
+        CardGame game = new CardGame(4, cardPack);
+        Player player = new Player(1, 5, new Deck(1), new Deck(2), game);
         player.writeToFile("Test log message.");
 
         // Check the file content
@@ -129,8 +135,9 @@ public class PlayerTest {
     // Boundary test: Long log message
     @Test
     public void testWriteToFileLongMessage() {
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
-        Player player = new Player(1, 5, new Deck(1), new Deck(2), mockGame);
+        List<Card> cardPack = generateCardPack(40);
+        CardGame game = new CardGame(4, cardPack);
+        Player player = new Player(1, 5, new Deck(1), new Deck(2), game);
         String longMessage = "A".repeat(1000);
         player.writeToFile(longMessage);
 
@@ -150,13 +157,24 @@ public class PlayerTest {
     }
 
     /**
+     * Helper method to generate a pack of cards.
+     *
+     * @param numCards Number of cards to generate.
+     * @return List of Card objects.
+     */
+    private List<Card> generateCardPack(int numCards) {
+        return IntStream.range(1, numCards + 1).mapToObj(Card::new).collect(Collectors.toList());
+    }
+
+    /**
      * Helper method to create a Player with a predefined hand.
      */
     private Player createPlayerWithHand(int playerId, int[] cardValues) {
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
-        CardGame mockGame = new CardGame(2, new ArrayList<>());
-        Player player = new Player(playerId, 5, leftDeck, rightDeck, mockGame);
+        List<Card> cardPack = generateCardPack(16);
+        CardGame game = new CardGame(2, cardPack);
+        Player player = new Player(playerId, 5, leftDeck, rightDeck, game);
 
         for (int value : cardValues) {
             player.receiveCard(new Card(value));

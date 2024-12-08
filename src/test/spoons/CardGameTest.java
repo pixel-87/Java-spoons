@@ -60,7 +60,7 @@ public class CardGameTest {
 
         List<Card> cardPack = CardGame.loadPack("test_pack.txt");
         assertEquals(8, cardPack.size());
-        assertEquals(1, cardPack.getFirst().getValue());
+        assertEquals(1, cardPack.getFirst().value());
     }
 
     // Negative test: File with invalid card value
@@ -93,7 +93,7 @@ public class CardGameTest {
     public void testDistributeCardsEvenly() {
         List<Card> cardPack = generateCardPack(40);
         CardGame game = new CardGame(4, cardPack);
-        game.initializeGame();
+        game.initialiseGame();
 
         // Assert each player has 4 cards
         for (Player player : game.getPlayers()) {
@@ -121,7 +121,7 @@ public class CardGameTest {
     public void testDistributeCardsLargePack() {
         List<Card> cardPack = generateCardPack(100);
         CardGame game = new CardGame(4, cardPack);
-        game.initializeGame();
+        game.initialiseGame();
 
         // Assert each player has 4 cards
         for (Player player : game.getPlayers()) {
@@ -143,7 +143,7 @@ public class CardGameTest {
     public void testEndGamePlayerWins() {
         List<Card> cardPack = generateCardPack(40);
         CardGame game = new CardGame(4, cardPack);
-        game.initializeGame();
+        game.initialiseGame();
 
         // Simulate a player having a winning hand
         game.getPlayers().getFirst().receiveCard(new Card(5));
@@ -162,7 +162,7 @@ public class CardGameTest {
         CardGame game = new CardGame(4, cardPack);
 
         // Initialize and end the game
-        game.initializeGame();
+        game.initialiseGame();
         game.endGame();
 
         // Verify that no player has won the game

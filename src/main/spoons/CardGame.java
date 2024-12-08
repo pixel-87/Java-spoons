@@ -203,7 +203,7 @@ public class CardGame {
                 writer.write("deck" + deck.getDeckId() + " contents: ");
                 List<Card> deckCards = deck.getCards();
                 for (Card card : deckCards) {
-                    writer.write(card.getValue() + " ");
+                    writer.write(card.value() + " ");
                 }
                 writer.newLine();
             } catch (IOException e) {
