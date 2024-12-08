@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileReader;
@@ -60,21 +59,21 @@ public class PlayerTest {
     // Positive test: Winning hand with four matching cards
     @Test
     public void testIsWinningConditionWinningHand() {
-        Player player = createPlayerWithHand(1, new int[]{5, 5, 5, 5});
+        Player player = createPlayerWithHand(new int[]{5, 5, 5, 5});
         assertTrue(player.isWinningCondition());
     }
 
     // Negative test: Non-winning hand with different values
     @Test
     public void testIsWinningConditionNonWinningHand() {
-        Player player = createPlayerWithHand(1, new int[]{1, 2, 3, 4});
+        Player player = createPlayerWithHand(new int[]{1, 2, 3, 4});
         assertFalse(player.isWinningCondition());
     }
 
     // Boundary test: Large hand with one winning set
     @Test
     public void testIsWinningConditionLargeHand() {
-        Player player = createPlayerWithHand(1, new int[]{3, 3, 3, 3, 7, 8, 9, 10, 2, 1});
+        Player player = createPlayerWithHand(new int[]{3, 3, 3, 3, 7, 8, 9, 10, 2, 1});
         assertTrue(player.isWinningCondition());
     }
 
@@ -85,7 +84,7 @@ public class PlayerTest {
     // Positive test: Discard a non-preferred card
     @Test
     public void testDiscardCardNonPreferred() {
-        Player player = createPlayerWithHand(1, new int[]{5, 7, 5, 9});
+        Player player = createPlayerWithHand(new int[]{5, 7, 5, 9});
         player.setPreferredDenomination(5);
 
         Card discarded = player.discardCard();
@@ -97,7 +96,7 @@ public class PlayerTest {
     // Boundary test: Discard when all cards match the preferred denomination
     @Test
     public void testDiscardCardAllPreferred() {
-        Player player = createPlayerWithHand(1, new int[]{7, 7, 7, 7});
+        Player player = createPlayerWithHand(new int[]{7, 7, 7, 7});
         player.setPreferredDenomination(7);
 
         Card discarded = player.discardCard();
@@ -155,6 +154,11 @@ public class PlayerTest {
             fail("IOException occurred: " + e.getMessage());
         }
     }
+    @Test public void testDiscardLogic() {
+        Player player = createPlayerWithHand(new int[]{3, 5, 3, 6});
+        player.setPreferredDenomination(3);
+        Card discardedCard = player.discardCard();
+        assertNotEquals(3, discardedCard.value(), "Discarded card should not be the preferred denomination 3"); }
 
 
 
@@ -171,12 +175,12 @@ public class PlayerTest {
     /**
      * Helper method to create a Player with a predefined hand.
      */
-    private Player createPlayerWithHand(int playerId, int[] cardValues) {
+    private Player createPlayerWithHand(int[] cardValues) {
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
         List<Card> cardPack = generateCardPack(16);
         CardGame game = new CardGame(2, cardPack);
-        Player player = new Player(playerId, 5, leftDeck, rightDeck, game);
+        Player player = new Player(1, 5, leftDeck, rightDeck, game);
 
         for (int value : cardValues) {
             player.receiveCard(new Card(value));
