@@ -35,9 +35,11 @@ public class PlayerTest {
     }
 
     // Negative test: Null decks
-    //@Test(expected = NullPointerException.class)
+    @Test
     public void testPlayerConstructorWithNullDecks() {
-        new Player(1, 5, null, null);
+        assertThrows(NullPointerException.class, () -> {
+            new Player(1, 5, null, null);
+        });
     }
 
     // Boundary test: Minimum playerId
@@ -90,11 +92,13 @@ public class PlayerTest {
     }
 
     // Negative test: Discard from empty hand
-    //@Test(expected = IllegalStateException.class)
+    @Test
     public void testDiscardCardFromEmptyHand() {
         Player player = createPlayerWithHand(1, new int[]{});
-        player.discardCard();
+
+        assertThrows(IllegalStateException.class, player::discardCard);
     }
+
 
     // Boundary test: Discard when all cards match the preferred denomination
     @Test
