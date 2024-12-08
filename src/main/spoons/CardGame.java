@@ -38,7 +38,7 @@ public class CardGame {
      * @param cardPack   List of cards in the game.
      */
     public CardGame(int numPlayers, List<Card> cardPack) {
-        if (cardPack.size() == numPlayers * 8) {
+        if (cardPack.size() < numPlayers * 8) {
             throw new IllegalArgumentException("Invalid card pack: insufficient cards.");
         }
         this.numPlayers = numPlayers;
