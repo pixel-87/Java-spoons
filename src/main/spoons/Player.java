@@ -65,6 +65,7 @@ public class Player {
                 }
             }
 
+            //Causes a break
             try {
                 Thread.sleep(100);
             } catch (InterruptedException e) {
@@ -138,5 +139,9 @@ public class Player {
 
     public int getPlayerId() {
         return playerId;
+    }
+
+    public List<Card> getHand() {
+        return hand;
     }
 }
