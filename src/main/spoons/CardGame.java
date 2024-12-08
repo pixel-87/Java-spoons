@@ -27,6 +27,9 @@ public class CardGame {
     /** Threads managing the gameplay for each player. */
     private final List<Thread> gameThreads;
 
+    /** Flag to indicate if the game is over. */
+    private volatile boolean gameOver;
+
     /**
      * Constructor for the CardGame class.
      *
@@ -39,6 +42,7 @@ public class CardGame {
         this.players = new ArrayList<>();
         this.decks = new ArrayList<>();
         this.gameThreads = new ArrayList<>();
+        this.gameOver = false;
     }
 
     /**
@@ -108,7 +112,7 @@ public class CardGame {
         }
 
         for (int i = 0; i < numPlayers; i++) {
-            Player player = new Player(i + 1, i + 1, decks.get(i), decks.get((i + 1) % numPlayers));
+            Player player = new Player(i + 1, i + 1, decks.get(i), decks.get((i + 1) % numPlayers), this);
             players.add(player);
         }
 
@@ -164,13 +168,31 @@ public class CardGame {
     public void endGame() {
         for (Player player : players) {
             player.endGame();
-            if (player.isWinningCondition()) {
-                System.out.println("Player " + player.getPlayerId() + " has won the game!");
-                return;
+        }
+    }
+
+    /**
+     * Signals that the game is over and sets the winner.
+     *
+     * @param winnerId The ID of the player who won.
+     */
+    public void signalWinner(int winnerId) {
+        synchronized (this) {
+            if (!gameOver) {
+                gameOver = true;
+                System.out.println("Player " + winnerId + " has won the game!");
+                endGame();
             }
         }
+    }
 
-        System.out.println("The game has ended in a draw.");
+    /**
+     * Checks if the game is over.
+     *
+     * @return True if the game is over, false otherwise.
+     */
+    public boolean isGameOver() {
+        return gameOver;
     }
 
     /**

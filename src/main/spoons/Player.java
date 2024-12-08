@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /**
  * Represents a player in the card game.
  * Each player has a unique ID, a hand of cards, preferences, and interacts with adjacent decks.
@@ -33,6 +32,9 @@ public class Player {
     /** Flag to indicate whether the game is still active. */
     private volatile boolean gameInProgress;
 
+    /** Reference to the CardGame instance. */
+    private final CardGame game;
+
     /**
      * Constructor for the Player class.
      *
@@ -40,13 +42,15 @@ public class Player {
      * @param preferredDenomination Preferred card denomination for the player.
      * @param leftDeck              Reference to the deck the player draws from.
      * @param rightDeck             Reference to the deck the player discards to.
+     * @param game                  Reference to the main CardGame instance.
      */
-    public Player(int playerId, int preferredDenomination, Deck leftDeck, Deck rightDeck) {
+    public Player(int playerId, int preferredDenomination, Deck leftDeck, Deck rightDeck, CardGame game) {
         this.playerId = playerId;
         this.hand = new ArrayList<>();
         this.preferredDenomination = preferredDenomination;
         this.leftDeck = leftDeck;
         this.rightDeck = rightDeck;
+        this.game = game;
         this.playerFile = new File("player" + playerId + "_output.txt");
         this.gameInProgress = true;
         initializeLogFile();
@@ -72,7 +76,8 @@ public class Player {
             synchronized (this) {
                 if (isWinningCondition()) {
                     writeToFile("Player " + playerId + " wins with hand: " + handToString() + "\n");
-                    gameInProgress = false; // End the game
+                    game.signalWinner(playerId);
+                    gameInProgress = false; // End the game for this player
                     return;
                 }
 
@@ -184,30 +189,5 @@ public class Player {
      */
     public int getPlayerId() {
         return playerId;
-    }
-
-    /**
-     * Getter for the preferred denomination.
-     *
-     * @return The player's preferred denomination.
-     */
-    public  int getPreferredDenomination(){
-        return preferredDenomination;
-    }
-
-    public  Deck getLeftDeck(){
-        return leftDeck;
-    }
-
-    public  Deck getRightDeck(){
-        return rightDeck;
-    }
-
-    public  List<Card> getHand(){
-        return hand;
-    }
-
-    public void setPreferredDenomination(int newPreferredDenomination) {
-        this.preferredDenomination = newPreferredDenomination;
     }
 }

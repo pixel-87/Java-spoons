@@ -155,7 +155,7 @@ public class CardGameTest {
         game.endGame();
 
         boolean anyPlayerWon = game.getPlayers().stream().anyMatch(Player::isWinningCondition);
-        derty7uk7assertFalse(anyPlayerWon);
+        assertFalse(anyPlayerWon);
     }
 
     /**
