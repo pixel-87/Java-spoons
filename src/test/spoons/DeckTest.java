@@ -67,13 +67,9 @@ class DeckTest {
         // Card for add thread to discard.
         Card card5 = new Card(5);
 
-        Runnable drawCardTask = () -> {
-                Card drawnCard = deck.drawCard();
-        };
+        Runnable drawCardTask = deck::drawCard;
 
-        Runnable addCardTask = () -> {
-            deck.addCard(card5);
-        };
+        Runnable addCardTask = () -> deck.addCard(card5);
 
         // Creating and starting threads.
         Thread drawThread = new Thread(drawCardTask);
@@ -89,10 +85,11 @@ class DeckTest {
         while (deck.drawCard() != null) {
             finalCardCount++;
         }
+        List<Card> finalDeck = deck.getCards();
         // Testing that the card count hasn't changed in the deck.
         assertEquals(numCards, finalCardCount, "Total card count should be 4, same as when initialised");
         // Testing that the deck is not the same as it was initially.
-        assertNotEquals(initialDeck, deck,"The final deck should be different was what it was initially");
+        assertNotEquals(initialDeck, finalDeck,"The final deck should be different was what it was initially");
     }
 
 }
