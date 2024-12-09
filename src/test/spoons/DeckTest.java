@@ -58,26 +58,22 @@ class DeckTest {
     void twoThreadedDrawAndAdd() throws InterruptedException {
         int numCards = 4; // Each deck should only have 4 cards at a time.
         Deck deck = new Deck(1);
-
+        // stored deck initial deck contents.
+        List<Card> initialDeck = deck.getCards();
         // Each deck should only ever have 4 cards at max by design.
         for (int i = 1; i <= numCards; i++) {
             deck.addCard(new Card(i));
         }
+        // Card for add thread to discard.
+        Card card5 = new Card(5);
 
-        Runnable drawAndDiscardTask = () -> {
-            for (int i = 1; i <= numCards; i++) {
-                Card DrawnCard = deck.drawCard();
-                boolean hasWon = false; // Simplified victory condition check, fully implemented in CardGame class.
-                if (hasWon) {
-                    break;
-                }
-                deck.addCard(DrawnCard); // Functionality to discard correct card isn't needed for this test.
-            }
-        };
+        Runnable drawCardTask = deck::drawCard;
+
+        Runnable addCardTask = () -> deck.addCard(card5);
 
         // Creating and starting threads.
-        Thread drawThread = new Thread(drawAndDiscardTask);
-        Thread discardThread = new Thread(drawAndDiscardTask);
+        Thread drawThread = new Thread(drawCardTask);
+        Thread discardThread = new Thread(addCardTask);
         drawThread.start();
         discardThread.start();
 
@@ -89,7 +85,11 @@ class DeckTest {
         while (deck.drawCard() != null) {
             finalCardCount++;
         }
-
-        assertEquals(numCards, finalCardCount,"Total card count should be 4, same as when initialised");
+        List<Card> finalDeck = deck.getCards();
+        // Testing that the card count hasn't changed in the deck.
+        assertEquals(numCards, finalCardCount, "Total card count should be 4, same as when initialised");
+        // Testing that the deck is not the same as it was initially.
+        assertNotEquals(initialDeck, finalDeck,"The final deck should be different was what it was initially");
     }
+
 }

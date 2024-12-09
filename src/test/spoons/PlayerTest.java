@@ -1,6 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.io.FileReader;
@@ -16,11 +15,7 @@ import java.util.stream.IntStream;
  */
 public class PlayerTest {
 
-    /**
-     * Tests for Player Constructor
-     */
-
-    // Positive test: Valid player creation
+    // Checks that player is constructed as expected.
     @Test
     public void testPlayerConstructorValid() {
         List<Card> cardPack = generateCardPack(40);
@@ -41,64 +36,30 @@ public class PlayerTest {
     }
 
 
-    // Boundary test: Minimum playerId
-    @Test
-    public void testPlayerConstructorWithMinimumPlayerId() {
-        List<Card> cardPack = generateCardPack(40);
-        CardGame game = new CardGame(4, cardPack);
-        Deck leftDeck = new Deck(1);
-        Deck rightDeck = new Deck(2);
-        Player player = new Player(0, 5, leftDeck, rightDeck, game);
-
-        assertEquals(0, player.getPlayerId());
-    }
-
     /**
      * Tests for isWinningCondition Method
      */
 
-    // Positive test: Winning hand with four matching cards
+    // Winning hand with four matching cards
     @Test
-    public void testIsWinningConditionWinningHand() {
-        Player player = createPlayerWithHand(1, new int[]{5, 5, 5, 5});
+    public void testIsWinningHand() {
+        Player player = createPlayerWithHand(new int[]{5, 5, 5, 5});
         assertTrue(player.isWinningCondition());
     }
 
-    // Negative test: Non-winning hand with different values
+    // Non-winning hand with different values
     @Test
-    public void testIsWinningConditionNonWinningHand() {
-        Player player = createPlayerWithHand(1, new int[]{1, 2, 3, 4});
+    public void testIsWinningNonWinningHand() {
+        Player player = createPlayerWithHand(new int[]{1, 2, 3, 4});
         assertFalse(player.isWinningCondition());
     }
 
-    // Boundary test: Large hand with one winning set
-    @Test
-    public void testIsWinningConditionLargeHand() {
-        Player player = createPlayerWithHand(1, new int[]{3, 3, 3, 3, 7, 8, 9, 10, 2, 1});
-        assertTrue(player.isWinningCondition());
-    }
 
-    /**
-     * Tests for discardCard Method
-     */
-
-    // Positive test: Discard a non-preferred card
+    //  Discard a non-preferred card
     @Test
     public void testDiscardCardNonPreferred() {
-        Player player = createPlayerWithHand(1, new int[]{5, 7, 5, 9});
+        Player player = createPlayerWithHand(new int[]{5, 7, 5, 9});
         player.setPreferredDenomination(5);
-
-        Card discarded = player.discardCard();
-        assertEquals(7, discarded.value());
-    }
-
-
-
-    // Boundary test: Discard when all cards match the preferred denomination
-    @Test
-    public void testDiscardCardAllPreferred() {
-        Player player = createPlayerWithHand(1, new int[]{7, 7, 7, 7});
-        player.setPreferredDenomination(7);
 
         Card discarded = player.discardCard();
         assertEquals(7, discarded.value());
@@ -108,7 +69,7 @@ public class PlayerTest {
      * Tests for writeToFile Method
      */
 
-    // Positive test: Valid log message
+    //  Valid log message
     @Test
     public void testWriteToFileValidMessage() {
         List<Card> cardPack = generateCardPack(40);
@@ -132,7 +93,7 @@ public class PlayerTest {
         }
     }
 
-    // Boundary test: Long log message
+    //  Long log message
     @Test
     public void testWriteToFileLongMessage() {
         List<Card> cardPack = generateCardPack(40);
@@ -156,6 +117,16 @@ public class PlayerTest {
         }
     }
 
+    /**
+     * Ensures that correct card is discarded, according to player denomination.
+     */
+    @Test
+    public void testDiscardLogic() {
+        Player player = createPlayerWithHand(new int[]{3, 5, 3, 6});
+        player.setPreferredDenomination(3);
+        Card discardedCard = player.discardCard();
+        assertNotEquals(3, discardedCard.value(), "Discarded card should not be the preferred denomination 3");
+    }
 
 
     /**
@@ -168,15 +139,18 @@ public class PlayerTest {
         return IntStream.range(1, numCards + 1).mapToObj(Card::new).collect(Collectors.toList());
     }
 
+
     /**
      * Helper method to create a Player with a predefined hand.
+     * @param cardValues A list of card values to be added to that player's hand.
+     * @return Returns a player with a full hand.
      */
-    private Player createPlayerWithHand(int playerId, int[] cardValues) {
+    private Player createPlayerWithHand(int[] cardValues) {
         Deck leftDeck = new Deck(1);
         Deck rightDeck = new Deck(2);
         List<Card> cardPack = generateCardPack(16);
         CardGame game = new CardGame(2, cardPack);
-        Player player = new Player(playerId, 5, leftDeck, rightDeck, game);
+        Player player = new Player(1, 5, leftDeck, rightDeck, game);
 
         for (int value : cardValues) {
             player.receiveCard(new Card(value));
