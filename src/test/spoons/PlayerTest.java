@@ -15,10 +15,6 @@ import java.util.stream.IntStream;
  */
 public class PlayerTest {
 
-    /**
-     * Tests for Player Constructor
-     */
-
     // Checks that player is constructed as expected.
     @Test
     public void testPlayerConstructorValid() {
@@ -44,23 +40,20 @@ public class PlayerTest {
      * Tests for isWinningCondition Method
      */
 
-    // Positive test: Winning hand with four matching cards
+    // Winning hand with four matching cards
     @Test
-    public void testIsWinningConditionWinningHand() {
+    public void testIsWinningHand() {
         Player player = createPlayerWithHand(new int[]{5, 5, 5, 5});
         assertTrue(player.isWinningCondition());
     }
 
-    // Negative test: Non-winning hand with different values
+    // Non-winning hand with different values
     @Test
-    public void testIsWinningConditionNonWinningHand() {
+    public void testIsWinningNonWinningHand() {
         Player player = createPlayerWithHand(new int[]{1, 2, 3, 4});
         assertFalse(player.isWinningCondition());
     }
 
-    /**
-     * Tests for discardCard Method
-     */
 
     //  Discard a non-preferred card
     @Test
@@ -132,7 +125,8 @@ public class PlayerTest {
         Player player = createPlayerWithHand(new int[]{3, 5, 3, 6});
         player.setPreferredDenomination(3);
         Card discardedCard = player.discardCard();
-        assertNotEquals(3, discardedCard.value(), "Discarded card should not be the preferred denomination 3"); }
+        assertNotEquals(3, discardedCard.value(), "Discarded card should not be the preferred denomination 3");
+    }
 
 
     /**
@@ -145,8 +139,11 @@ public class PlayerTest {
         return IntStream.range(1, numCards + 1).mapToObj(Card::new).collect(Collectors.toList());
     }
 
+
     /**
      * Helper method to create a Player with a predefined hand.
+     * @param cardValues A list of card values to be added to that player's hand.
+     * @return Returns a player with a full hand.
      */
     private Player createPlayerWithHand(int[] cardValues) {
         Deck leftDeck = new Deck(1);
