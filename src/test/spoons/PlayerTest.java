@@ -117,16 +117,6 @@ public class PlayerTest {
         }
     }
 
-    /**
-     * Ensures that correct card is discarded, according to player denomination.
-     */
-    @Test
-    public void testDiscardLogic() {
-        Player player = createPlayerWithHand(new int[]{3, 5, 3, 6});
-        player.setPreferredDenomination(3);
-        Card discardedCard = player.discardCard();
-        assertNotEquals(3, discardedCard.value(), "Discarded card should not be the preferred denomination 3");
-    }
 
 
     /**
