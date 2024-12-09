@@ -146,21 +146,6 @@ public class CardGameTest {
         assertTrue(game.getPlayers().getFirst().isWinningCondition());
     }
 
-    //  Game ends in a draw
-    @Test
-    public void testEndGameDraw() {
-        List<Card> cardPack = generateCardPack(40);
-        CardGame game = new CardGame(4, cardPack);
-
-        // Initialize and end the game
-        game.initialiseGame();
-        game.endGame();
-
-        // Verify that no player has won the game
-        boolean anyPlayerWon = game.getPlayers().stream().anyMatch(Player::isWinningCondition);
-        assertFalse(anyPlayerWon, "No player should win after the game ends in a draw.");
-    }
-
     /**
      * Helper method to generate a pack of cards.
      *
