@@ -38,8 +38,8 @@ public class CardGame {
      * @param cardPack   List of cards in the game.
      */
     public CardGame(int numPlayers, List<Card> cardPack) {
-        if (cardPack.size() < numPlayers * 8) {
-            throw new IllegalArgumentException("Invalid card pack: insufficient cards.");
+        if (cardPack.size() != numPlayers * 8) {
+            throw new IllegalArgumentException("Invalid card pack: incorrect number of cards.");
         }
         this.numPlayers = numPlayers;
         this.cardPack = cardPack;
@@ -70,8 +70,8 @@ public class CardGame {
             scanner.close();
 
             List<Card> cardPack = loadPack(filePath);
-            if (cardPack.size() < numPlayers * 8) {
-                throw new IllegalArgumentException("Invalid card pack: insufficient cards.");
+            if (cardPack.size() != numPlayers * 8) {
+                throw new IllegalArgumentException("Invalid card pack: incorrect number of cards.");
             }
 
             CardGame game = new CardGame(numPlayers, cardPack);
