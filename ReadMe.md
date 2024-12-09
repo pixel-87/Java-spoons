@@ -24,8 +24,8 @@ java CardGame
 Please enter the number of players:
 4
 Please enter the location of a pack to load:
-four.txt
+pack1.txt
 ```
 
 A valid input pack is a plain text file, where each row contains a single non-negative int, and has _8n_ rows. It is legal for the face value of a card to exceed n.
-This also means a valid pack is one in which there is no possible winning hand. If you want to upload your own Card pack you must upload it to the project root. 
+This also means a valid pack is one in which there is no possible winning hand. If you want to upload your own Card pack you must upload it to the project root.
